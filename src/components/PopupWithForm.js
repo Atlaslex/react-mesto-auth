@@ -3,7 +3,7 @@ import React from "react";
 function PopupWithForm({ name, title, isOpen, onClose, children, onSubmit, isLoading, loadingText, textBtn }) {
 
   function handleCLoseOverlayClick(e) {
-    if(e.target === e.currentTarget) {
+    if (e.target === e.currentTarget) {
       onClose();
     }
   }

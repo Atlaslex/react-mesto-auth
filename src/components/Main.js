@@ -6,7 +6,7 @@ function Main({ onEditAvatar, onEditProfile, onAddPlace, onCardClick, cards, onC
 
   const currentUser = useContext(CurrentUserContext);
 
- 
+
   return (
     <main className="content">
       <section className="profile">
@@ -38,12 +38,12 @@ function Main({ onEditAvatar, onEditProfile, onAddPlace, onCardClick, cards, onC
       </section>
       <ul className="elements">
         {cards.map(card => (
-         <Card
+          <Card
             key={card._id}
             card={card}
             onCardClick={onCardClick}
-            onCardDelete = {onCardDelete}
-            onCardLike = {onCardLike}
+            onCardDelete={onCardDelete}
+            onCardLike={onCardLike}
           />)
         )}
       </ul>

@@ -30,9 +30,3 @@ function DeleteCardPopup({ isOpen, onSubmit, onClose, card, isLoading }) {
 export default DeleteCardPopup;
 
 
-if(res){
-  this.setState({
-    message: ''
-  }, () => {
-    this.props.history.push('/login');
-  })}
