@@ -21,13 +21,7 @@ function ImagePopup({ card, onClose, isOpen }) {
     }
   }
 
-  // function handleCloseOverlayClick(e) {
-  //   if (e.target === e.currentTarget) {
-  //     onClose();
-  //   }
-  // }
-
-  return (
+   return (
     <div
       className={`popup popup_type_img ${card.isOpen ? 'popup_opened' : ''}`}
       onClick={handleCloseOverlayClick}
