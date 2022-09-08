@@ -6,6 +6,13 @@
 
 }
 
+@media screen and (max-width: 620px) {
+  .header {
+    padding: 28px 0 28px;
+    
+  }
+
+}
 
 @media screen and (max-width: 320px) {
   .header {

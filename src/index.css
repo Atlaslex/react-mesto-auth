@@ -48,8 +48,6 @@
 @import url(./root/root.css);
 @import url(./blocks/header/__container/header__container.css);
 @import url(./blocks/link/link.css);
-@import url(./blocks/header/__email/header__email.css);
-@import url(./blocks/header/__link/header__link.css);
 @import url(./blocks/header/__menu/header__menu.css);
 @import url(./blocks/sign-up/__container/sign-up__container.css);
 @import url(./blocks/sign-up/__description/sign-up__description.css);
@@ -61,3 +59,6 @@
 @import url(./blocks/popup/__title-info/popup__title-info.css);
 @import url(./blocks/form/__item/_type/form__item_type_registration.css);
 @import url(./blocks/sign-up/__authorization-button/_inactive/sign-up__authorization-button_inactive.css);
+@import url(./blocks/header/__button-mobile/header__button-mobile.css);
+@import url(./blocks/header/__button-mobile/_exit/header__button-mobile_exit.css);
+@import url(./blocks/header/__menu/_open/header__menu_open.css);

@@ -1,0 +1,15 @@
+.header__button-mobile_exit {
+    background-color: transparent;
+    background-image: url("./close-Icon.png");
+    background-size: contain;
+    height: 20px;
+    width: 20px;
+    margin-right: 30px;
+    align-self: flex-end;
+    border: 0;
+}
+
+.header__button-mobile_exit:hover {
+    cursor: pointer;
+    opacity: .6;
+}
