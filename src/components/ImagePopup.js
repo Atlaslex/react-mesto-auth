@@ -1,17 +1,40 @@
-import React from "react";
+import { useEffect } from "react";
 
-function ImagePopup({ card, onClose }) {
+function ImagePopup({ card, onClose, isOpen }) {
 
-  function handleCLoseOverlayClick(e) {
-    if (e.target === e.currentTarget) {
+  useEffect(() => {
+    if (isOpen) {
+      document.addEventListener("keydown", handleEscClose);
+    }
+    return () => document.removeEventListener("keydown", handleEscClose);
+  }, [isOpen]);
+
+  function handleEscClose(evt) {
+    if (evt.key === "Escape") {
       onClose();
     }
   }
 
+  function handleCloseOverlayClick(evt) {
+    if (evt.target === evt.currentTarget) {
+      onClose();
+    }
+  }
+
+  // function handleCloseOverlayClick(e) {
+  //   if (e.target === e.currentTarget) {
+  //     onClose();
+  //   }
+  // }
+
   return (
-    <div className={`popup popup_type_img ${card.isOpen ? 'popup_opened' : ''}`} onClick={handleCLoseOverlayClick}>
-      <div className="popup__img-container">
-        <button className="popup__close" type="button" onClick={() => { onClose(card.card) }}></button>
+    <div
+      className={`popup popup_type_img ${card.isOpen ? 'popup_opened' : ''}`}
+      onClick={handleCloseOverlayClick}
+    >
+      <div
+        className="popup__img-container">
+        <button className="popup__close" type="button" onClick={onClose}></button>
         <div className="popup__img-title">
           <img className="popup__image" alt={card.card.name} src={card.card.link} />
           <h2 className="popup__title">{card.card.name}</h2>

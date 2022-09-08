@@ -26,13 +26,14 @@ function App({ history }) {
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
+  const [isImagePopupOpen, setImagePopupOpen] = useState(false);
   const [isConfirmationDelete, setIsConfirmationDelete] = useState(false);
   const [currentUser, setCurrentUser] = useState({ name: '', about: '' });
   const [cards, setCards] = useState([]);
-  const [card, setCard] = useState({});
+  const [cardToBeDeleted, setCardToBeDeleted] = useState({});
   const [isLoading, setIsLoading] = useState(false);
 
-  const isOpen = isEditAvatarPopupOpen || isEditProfilePopupOpen || isAddPlacePopupOpen || selectedCard
+  // const isAnyPopupOpened = isEditAvatarPopupOpen || isEditProfilePopupOpen || isAddPlacePopupOpen || selectedCard
 
   const [loggedIn, setLoggedIn] = useState(false);
   const [textForInfoTooltip, setTextForInfoTooltip] = useState('');
@@ -40,45 +41,71 @@ function App({ history }) {
   const [isInfoTooltipPopupOpen, setIsInfoTooltipPopupOpen] = useState(false);
   const [userEmail, setUserEmail] = useState('');
 
-  
-  useEffect(() => {
-    function closeByEscape(evt) {
-      if (evt.key === 'Escape') {
-        closeAllPopups();
-      }
-    }
-    if (isOpen) {
-      document.addEventListener('keydown', closeByEscape);
-      return () => {
-        document.removeEventListener('keydown', closeByEscape);
-      }
-    }
-  }, [isOpen])
+
+  // useEffect(() => {
+  //   function closeByEscape(evt) {
+  //     if (evt.key === 'Escape') {
+  //       closeAllPopups();
+  //     }
+  //   }
+  //   if (isAnyPopupOpened) {
+  //     document.addEventListener('keydown', closeByEscape);
+  //     return () => {
+  //       document.removeEventListener('keydown', closeByEscape);
+  //     }
+  //   }
+  // }, [isAnyPopupOpened])
 
   useEffect(() => {
-    api.getUserInfo()
-      .then((res) => {
-        setCurrentUser(res);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    if (loggedIn) {
+      api
+        .getUserInfo()
+        .then((userInfo) => {
+          setCurrentUser(userInfo);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  }, [loggedIn]);
 
-    api.getInitialCards()
-      .then((res) => {
-        setCards(res);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
+  useEffect(() => {
+    if (loggedIn) {
+      api
+        .getInitialCards()
+        .then((cardsInfo) => {
+          setCards(cardsInfo);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  }, [loggedIn]);
 
-  
-  
+  // useEffect(() => {
+  //   api.getUserInfo()
+  //     .then((res) => {
+  //       setCurrentUser(res);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+
+  //   api.getInitialCards()
+  //     .then((res) => {
+  //       setCards(res);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // }, []);
+
+
+
   const getUserEmail = async (token) => {
-    try{
+    try {
       const res = await getUserData(token);
-      if(res.data.email) {
+      if (res.data.email) {
         setUserEmail(res.data.email);
         setLoggedIn(true);
         history.push('/')
@@ -106,6 +133,7 @@ function App({ history }) {
     setIsEditAvatarPopupOpen(false);
     setIsConfirmationDelete(false);
     setIsInfoTooltipPopupOpen(false);
+    setImagePopupOpen(false);
   };
 
   function handleConfirmationDeleteClick() {
@@ -210,11 +238,11 @@ function App({ history }) {
 
   function handleCardClick(card) {
     setSelectCard({ isOpen: true, card: card });
-
+    setImagePopupOpen(!isImagePopupOpen);
   }
 
   function handleDeleteCardClick(card) {
-    setCard(card);
+    setCardToBeDeleted(card);
     setIsConfirmationDelete(true);
 
   }
@@ -247,9 +275,7 @@ function App({ history }) {
       setIsInfoTooltipPopupOpen(true);
       setImageForInfoTooltip(AcceptRegist);
       setTextForInfoTooltip("Вы успешно зарегистрировались!");
-      handleSignIn(email, password);
-      setLoggedIn(true);
-      history.push('/')
+      handleSignIn({ email, password });
     } catch {
       setIsInfoTooltipPopupOpen(true);
       setImageForInfoTooltip(RejectRegist);
@@ -258,15 +284,15 @@ function App({ history }) {
   }
 
 
-  
+
   return (
 
     <div className="page">
       <CurrentUserContext.Provider value={currentUser}>
-      <Switch>
-      <ProtectedRoute 
-            exact path="/" 
-            loggedIn={loggedIn} 
+        <Switch>
+          <ProtectedRoute
+            exact path="/"
+            loggedIn={loggedIn}
           >
 
             <Header linkTitle="Выйти" link="/sign-in" onSignOut={handleSignOut} email={userEmail} loggedIn={loggedIn} />
@@ -281,16 +307,16 @@ function App({ history }) {
               onCardLike={handleCardLike}
             />
             <Footer />
-            </ProtectedRoute>
-          
-            <Route path="/sign-up">
-            <Register onRegistration={handleRegistration} loggedIn={loggedIn}/>
+          </ProtectedRoute>
+
+          <Route path="/sign-up">
+            <Register onRegistration={handleRegistration} loggedIn={loggedIn} />
           </Route>
           <Route path="/sign-in">
-            <Login onLogIn={handleSignIn} loggedIn={loggedIn}/>
+            <Login onLogIn={handleSignIn} loggedIn={loggedIn} />
           </Route>
-          </Switch>
-            
+        </Switch>
+
         <EditAvatarPopup
           isOpen={isEditAvatarPopupOpen}
           onClose={closeAllPopups}
@@ -317,13 +343,15 @@ function App({ history }) {
         <ImagePopup
           card={selectedCard}
           onClose={closeAllPopups}
+          isOpen={isImagePopupOpen}
+          onCardClick={handleCardClick}
         />
 
         <DeleteCardPopup
           onSubmit={handleCardDelete}
           isOpen={isConfirmationDelete}
           onClose={closeAllPopups}
-          card={card}
+          card={cardToBeDeleted}
           isLoading={isLoading}
         >
 
@@ -336,7 +364,7 @@ function App({ history }) {
           isOpen={isInfoTooltipPopupOpen}
           onClose={closeAllPopups}
         >
-          <InfoTooltip 
+          <InfoTooltip
             image={imageForInfoTooltip}
             text={textForInfoTooltip}
           />
