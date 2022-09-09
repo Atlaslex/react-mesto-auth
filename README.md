@@ -11,3 +11,5 @@
 6. Адаптивная верстка.
 7. JavaScript.
 8. React.
+
+Ссылка на проект: https://atlaslex.github.io/react-mesto-auth/
