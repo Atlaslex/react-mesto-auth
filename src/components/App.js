@@ -22,7 +22,7 @@ import InfoTooltip from './InfoTooltip';
 
 function App({ history }) {
 
-  const [selectedCard, setSelectCard] = useState({ isOpen: false, card: {} });
+  const [selectedCard, setSelectCard] = useState({ card: {} });
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
@@ -32,29 +32,11 @@ function App({ history }) {
   const [cards, setCards] = useState([]);
   const [cardToBeDeleted, setCardToBeDeleted] = useState({});
   const [isLoading, setIsLoading] = useState(false);
-
-  // const isAnyPopupOpened = isEditAvatarPopupOpen || isEditProfilePopupOpen || isAddPlacePopupOpen || selectedCard
-
   const [loggedIn, setLoggedIn] = useState(false);
   const [textForInfoTooltip, setTextForInfoTooltip] = useState('');
   const [imageForInfoTooltip, setImageForInfoTooltip] = useState('');
   const [isInfoTooltipPopupOpen, setIsInfoTooltipPopupOpen] = useState(false);
   const [userEmail, setUserEmail] = useState('');
-
-
-  // useEffect(() => {
-  //   function closeByEscape(evt) {
-  //     if (evt.key === 'Escape') {
-  //       closeAllPopups();
-  //     }
-  //   }
-  //   if (isAnyPopupOpened) {
-  //     document.addEventListener('keydown', closeByEscape);
-  //     return () => {
-  //       document.removeEventListener('keydown', closeByEscape);
-  //     }
-  //   }
-  // }, [isAnyPopupOpened])
 
   useEffect(() => {
     if (loggedIn) {
@@ -81,26 +63,6 @@ function App({ history }) {
         });
     }
   }, [loggedIn]);
-
-  // useEffect(() => {
-  //   api.getUserInfo()
-  //     .then((res) => {
-  //       setCurrentUser(res);
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     });
-
-  //   api.getInitialCards()
-  //     .then((res) => {
-  //       setCards(res);
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     });
-  // }, []);
-
-
 
   const getUserEmail = async (token) => {
     try {
@@ -344,7 +306,6 @@ function App({ history }) {
           card={selectedCard}
           onClose={closeAllPopups}
           isOpen={isImagePopupOpen}
-          onCardClick={handleCardClick}
         />
 
         <DeleteCardPopup

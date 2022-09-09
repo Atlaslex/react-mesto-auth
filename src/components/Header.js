@@ -13,7 +13,7 @@ function Header({ linkTitle, link, onSignOut, email }) {
   useEffect(() => {
     window.addEventListener("resize", updateMedia);
     return () => window.removeEventListener("resize", updateMedia);
-  });
+  }, []);
 
   function toggleMenu() {
     setMenuOpen(!isMenuOpen);

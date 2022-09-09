@@ -11,3 +11,10 @@
   margin: auto;
   display: none;
 }
+
+@media screen and (max-width: 320px) {
+  .header__menu {
+    width: 320px;
+  }
+
+}
